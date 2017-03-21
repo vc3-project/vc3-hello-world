@@ -36,11 +36,11 @@ if __name__ == '__main__':
 
     ft['version'] = '0.0.1'
     ft['action']  = 'spawn'
-    ft['command'] = 'autopyfactory --debug --console --conf=%s/autopyfactory.conf' % (dest_etc,)
+    ft['command'] = 'autopyfactory --debug --console --conf=%s/vc3_factory.conf' % (dest_etc,)
 
     ft['files']   = {}
 
-    for name in ['autopyfactory.conf', 'mappings.conf', 'monitor.conf', 'queues.conf']:
+    for name in ['vc3_factory.conf', 'mappings.conf', 'monitor.conf', 'vc3_queues.conf']:
         filename = os.path.join(factory_etc, name)
 
         with open(filename, 'r') as f:
