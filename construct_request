@@ -24,8 +24,8 @@ if __name__ == '__main__':
     # define a work_queue_catalog
     wq = {}
 
-    wq['version'] = '6.0.0',
-    wq['action']  = 'spawn',
+    wq['version'] = '6.0.0'
+    wq['action']  = 'spawn'
     wq['command'] = 'catalog_server -Z "$VC3_REQUEST_RUNTIME_DIR/work_queue_catalog_port" -dall -o "$VC3_REQUEST_LOG_DIR/work_queue_catalog_log"'
 
     request[request_name]['services']['work-queue-catalog'] = wq
@@ -34,8 +34,8 @@ if __name__ == '__main__':
     ft = {} 
     dest_etc = '$VC3_REQUEST_RUNTIME_DIR/factory/etc'
 
-    ft['version'] = '0.0.1',
-    ft['action']  = 'spawn',
+    ft['version'] = '0.0.1'
+    ft['action']  = 'spawn'
     ft['command'] = 'autopyfactory --debug --console --conf=%s/autopyfactory.conf' % (dest_etc,)
 
     ft['files']   = {}
@@ -53,4 +53,6 @@ if __name__ == '__main__':
 
     request[request_name]['services']['vc3-factory'] = ft
 
-    print json.dumps(request)
+    requests = { 'request' : request }
+    print json.dumps(requests)
+
