@@ -1,0 +1,56 @@
+#!/usr/bin/env python
+
+import json
+import os
+import sys
+import urllib
+
+if __name__ == '__main__':
+
+    try:
+        request_name = sys.argv[1]
+        factory_etc  = sys.argv[2]
+    except IndexError:
+        print 'Use: ' + sys.argv[0] + ' name_of_request  apf_etc_dir'
+        sys.exit(1)
+
+    request = {}
+    request[request_name] = {}
+
+    request[request_name]['action'] = 'spawn'
+
+    request[request_name]['services'] = {}
+
+    # define a work_queue_catalog
+    wq = {}
+
+    wq['version'] = '6.0.0',
+    wq['action']  = 'spawn',
+    wq['command'] = 'catalog_server -Z "$VC3_REQUEST_RUNTIME_DIR/work_queue_catalog_port" -dall -o "$VC3_REQUEST_LOG_DIR/work_queue_catalog_log"'
+
+    request[request_name]['services']['work-queue-catalog'] = wq
+
+    # define a pilot factory
+    ft = {} 
+    dest_etc = '$VC3_REQUEST_RUNTIME_DIR/factory/etc'
+
+    ft['version'] = '0.0.1',
+    ft['action']  = 'spawn',
+    ft['command'] = 'autopyfactory --debug --console --conf=%s/autopyfactory.conf' % (dest_etc,)
+
+    ft['files']   = {}
+
+    for name in ['autopyfactory.conf', 'mappings.conf', 'monitor.conf', 'queues.conf']:
+        filename = os.path.join(factory_etc, name)
+
+        with open(filename, 'r') as f:
+            all_the_file = f.read()
+            encoded_file = urllib.quote_plus(all_the_file)
+
+            ft['files'][name] = {}
+            ft['files'][name]['destination'] = os.path.join(dest_etc, name)
+            ft['files'][name]['contents']    = encoded_file
+
+    request[request_name]['services']['vc3-factory'] = ft
+
+    print json.dumps(request)
