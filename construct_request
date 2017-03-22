@@ -32,11 +32,12 @@ if __name__ == '__main__':
 
     # define a pilot factory
     ft = {} 
+    def_conf = '$VC3_REQUEST_RUNTIME_DIR/cluster.conf'
     dest_etc = '$VC3_REQUEST_RUNTIME_DIR/factory/etc'
 
     ft['version'] = '0.0.1'
     ft['action']  = 'spawn'
-    ft['command'] = 'autopyfactory --debug --console --conf=%s/vc3_factory.conf' % (dest_etc,)
+    ft['command'] = 'autopyfactory --debug --console --conf=%s,%s/vc3_factory.conf' % (def_conf,dest_etc)
 
     ft['files']   = {}
 
