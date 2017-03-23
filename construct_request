@@ -21,23 +21,24 @@ if __name__ == '__main__':
 
     request[request_name]['services'] = {}
 
-    # define a work_queue_catalog
+    # define a cctools catalog server
     wq = {}
 
     wq['version'] = '6.0.0'
     wq['action']  = 'spawn'
-    wq['command'] = 'catalog_server -Z "$VC3_REQUEST_RUNTIME_DIR/work_queue_catalog_port" -dall -o "$VC3_REQUEST_LOG_DIR/work_queue_catalog_log"'
+    wq['command'] = 'vc3-cctools-catalog-server --port-file "$VC3_REQUEST_RUNTIME_DIR/cctools-catalog-server-port" -- -dall -o "$VC3_REQUEST_LOG_DIR/cctools-catalog-server.log" --history="$VC3_REQUEST_LOG_DIR/cctools-catalog-server.history"'
 
-    request[request_name]['services']['work-queue-catalog'] = wq
+    request[request_name]['services']['cctools-catalog-server'] = wq
 
     # define a pilot factory
     ft = {} 
-    def_conf = '$VC3_REQUEST_RUNTIME_DIR/cluster.conf'
+    def_clu  = '$VC3_REQUEST_RUNTIME_DIR/cluster.conf'
+    def_conf = '$VC3_REQUEST_MAIN_CONF'
     dest_etc = '$VC3_REQUEST_RUNTIME_DIR/factory/etc'
 
     ft['version'] = '0.0.1'
     ft['action']  = 'spawn'
-    ft['command'] = 'autopyfactory --debug --console --conf=%s,%s/vc3_factory.conf' % (def_conf,dest_etc)
+    ft['command'] = 'autopyfactory --debug --console --conf=%s,%s,%s/vc3_factory.conf' % (def_conf,def_clu,dest_etc)
 
     ft['files']   = {}
 
