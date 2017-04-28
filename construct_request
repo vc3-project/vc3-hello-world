@@ -46,7 +46,17 @@ if __name__ == '__main__':
 
         with open(filename, 'r') as f:
             all_the_file = f.read()
+	    
+	    if name is 'vc3_queues.conf':
+		all_the_file += """
+[VC3_WQ_MASTER]
+enabled = True
+workqueue.mastername = %s
+
+""" % (request_name,)
+		
             encoded_file = urllib.quote_plus(all_the_file)
+
 
             ft['files'][name] = {}
             ft['files'][name]['destination'] = os.path.join(dest_etc, name)
